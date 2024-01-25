@@ -18,15 +18,27 @@ from micropython import const
 button_pin_audio = Pin(16, Pin.IN, Pin.PULL_UP)
 button_pin_video = Pin(17, Pin.IN, Pin.PULL_UP)
 
-led_green = Pin(27,Pin.OUT, Pin.PULL_DOWN)
-led_green.high() #off
-#led_green.low() #on
-led_blue = Pin(26,Pin.OUT, Pin.PULL_DOWN)
-led_blue.high() #off
-#led_blue.low() #on
-led_red = Pin(28,Pin.OUT, Pin.PULL_DOWN)
-led_red.high() #off
-#led_red.low() #on
+led_green_a = Pin(27,Pin.OUT, Pin.PULL_DOWN)
+led_green_a.high() #off
+#led_green_a.low() #on
+led_blue_a = Pin(26,Pin.OUT, Pin.PULL_DOWN)
+led_blue_a.high() #off
+#led_blue_a.low() #on
+led_red_a = Pin(28,Pin.OUT, Pin.PULL_DOWN)
+led_red_a.high() #off
+#led_red_a.low() #on
+
+led_blue_v = Pin(18,Pin.OUT, Pin.PULL_DOWN)
+#led_blue_v.low() #on
+led_blue_v.high() #off
+
+led_red_v = Pin(19,Pin.OUT, Pin.PULL_DOWN)
+led_red_v.high() #off
+#led_red_v.low() #on
+
+led_green_v = Pin(20,Pin.OUT, Pin.PULL_DOWN)
+led_green_v.high() #of
+#led_green_v.low() #on
 
 _IRQ_CENTRAL_CONNECT = const(1)
 _IRQ_CENTRAL_DISCONNECT = const(2)
@@ -90,9 +102,14 @@ class BLESimplePeripheral:
 
     def _advertise(self, interval_us=500000):
         print("Starting advertising")
-        led_green.high() #off
-        led_blue.high() #off
-        led_red.high() #off
+        led_green_a.high() #off
+        led_blue_a.high() #off
+        led_red_a.high() #off
+        
+        led_green_v.high() #off
+        led_blue_v.high() #off
+        led_red_v.high() #off
+        
         self._ble.gap_advertise(interval_us, adv_data=self._payload)
 
     def on_write(self, callback):
@@ -107,21 +124,27 @@ def demo():
         print("RX", v)
         
         if v == b'vid_1':
+            led_green_v.high() #off
+            led_blue_v.high() #off
+            led_red_v.low() #on
             print("Video Off")
             
         if v == b'vid_0':
+            led_green_v.low() #on
+            led_blue_v.high() #off
+            led_red_v.high() #off
             print("Video On")
             
         if v == b'aud_1':
-            led_green.low() #on
-            led_blue.high() #off
-            led_red.high() #off
+            led_green_a.low() #on
+            led_blue_a.high() #off
+            led_red_a.high() #off
             print("Audio On")
             
         if v == b'aud_0':
-            led_green.high() #off
-            led_blue.high() #off
-            led_red.low() #on
+            led_green_a.high() #off
+            led_blue_a.high() #off
+            led_red_a.low() #on
             print("Audio Off")
             
 
@@ -149,3 +172,4 @@ def demo():
 
 if __name__ == "__main__":
     demo()
+
