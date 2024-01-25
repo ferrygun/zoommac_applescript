@@ -77,13 +77,19 @@ async def run(loop):
                     # Execute AppleScript and get the output
                     script_video = "stat_video.scpt"  
                     output_video = await execute_applescript(script_video)
-                    print(f"Video stat: {output_video}")
-                    await send_message(client, "vid_" + output_video)
+                    if(output_video != None):
+                        print(f"Video stat: {output_video}")
+                        await send_message(client, "vid_" + output_video)
+                    else:
+                        await send_message(client, "vid_1")
 
                     script_audio = "stat_audio.scpt"  
                     output_audio = await execute_applescript(script_audio)
-                    print(f"Audio stat: {output_audio}")
-                    await send_message(client, "aud_" + output_audio)
+                    if(output_audio != None):
+                        print(f"Audio stat: {output_audio}")
+                        await send_message(client, "aud_" + output_audio)
+                    else:
+                        await send_message(client, "aud_0")
 
         except Exception as e:
             print(f"Connection failed: {str(e)}")
